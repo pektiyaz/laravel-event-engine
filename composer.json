@@ -1,0 +1,21 @@
+{
+    "name": "pektiyaz/laravel-event-engine",
+    "description": "Event Driven Core  for laravel applications",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Pektiyaz\\LaravelEventEngine\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Pektiyaz Talibov",
+            "email": "pektiyaztalibov@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "illuminate/support": "^9.0 || ^10.0 || ^11.0 || ^12.0"
+    }
+}
