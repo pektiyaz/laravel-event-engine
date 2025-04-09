@@ -5,9 +5,9 @@ namespace Pektiyaz\LaravelEventEngine\CanValues;
 class EventCanResult
 {
     public function __construct(
-        public bool    $can,
-        public ?string $reason = null,
-        public array   $answers = []) {}
+        public bool  $can,
+        public mixed $data = null,
+        public array $answers = []) {}
 
 
     public function toArray(): array
@@ -18,7 +18,7 @@ class EventCanResult
         }
         return [
             "can"     => $this->can,
-            "reason"  => $this->reason,
+            "data"    => $this->data,
             "answers" => $answers
         ];
     }

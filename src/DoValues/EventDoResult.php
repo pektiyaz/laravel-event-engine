@@ -6,6 +6,7 @@ class EventDoResult
 
     public function __construct(
         public bool  $success,
+        public mixed $data,
         public array $answers = []
     ) {}
 
@@ -18,6 +19,7 @@ class EventDoResult
         }
         return [
             "success" => $this->success,
+            "data"    => $this->data,
             "answers" => $answers
         ];
     }

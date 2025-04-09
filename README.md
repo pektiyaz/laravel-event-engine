@@ -19,6 +19,8 @@ Must return:
 ```php
 return new EventCanValue(true)
 // OR
+return new EventCanValue(true, $data)
+// OR
 return new EventCanValue(false, "Reason..")
 ```
 
@@ -26,9 +28,9 @@ return new EventCanValue(false, "Reason..")
 Must return:
 
 ```php
-return new EventDoValue(true, $data) 
-// OR
 return new EventDoValue(true)
+// OR
+return new EventDoValue(true, $data) 
 // OR
 return new EventDoValue(false, "Reason...")
 
@@ -56,7 +58,7 @@ class CanClientPay
 ```
 
 ##  2. Create a Listener
-Listener that handles this event and returns a ['can' => true|false] response.
+Listener that handles this event and returns a EventCanValue response.
 
 ```php
 namespace App\Listeners;
@@ -110,12 +112,12 @@ if (!$result->can) {
     // Listing all answers
     foreach ($result->answers as $answer) {
         //$answer->can
-        //$answer->reason
+        //$answer->data
         //$answer->toArray()
         Log::debug('Event Answer', $answer->toArray());
     }
     //$result->toArray()
-    return response()->json(['error' => 'Payment denied', 'details' => $result->reason]);
+    return response()->json(['error' => 'Payment denied', 'details' => $result->data]);
 }
 ```
 ##  do() — execute an action
@@ -133,7 +135,7 @@ if (!$process->success) {
         Log::debug('Event Answer', $answer->toArray());
     }
     //$result->toArray()
-    return response()->json(['error' => 'Payment failed', 'details' => $process['errors']]);
+    return response()->json(['error' => 'Payment failed', 'details' => $process->data]);
 }
 
 return response()->json(['message' => 'Payment success', 'data' => $process->data]);

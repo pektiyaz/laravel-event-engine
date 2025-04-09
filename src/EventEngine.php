@@ -25,7 +25,7 @@ class EventEngine
             }
             if(!$listenerResult->can && $can){
                 $can = $listenerResult->can;
-                $reason = $listenerResult->reason;
+                $reason = $listenerResult->data;
             }
             $answers[] = $listenerResult;
         }
@@ -38,7 +38,8 @@ class EventEngine
     {
         $results = Event::dispatch($event);
         $answers = [];
-        $success = true;
+        $success = false;
+        $data = null;
 
         foreach ($results as $listenerResult) {
             if (!$listenerResult instanceof EventDoValue) {
@@ -46,10 +47,13 @@ class EventEngine
             }
             $answers[] = $listenerResult;
 
-            if(!$listenerResult->success) $success = false;
+            if(!$data && $listenerResult->success){
+                $success = true;
+                $data = $listenerResult->data;
+            }
         }
 
-        return new EventDoResult($success,$answers);
+        return new EventDoResult($success,$data, $answers);
     }
 
     public static function doAtomic(object $event): EventDoResult
