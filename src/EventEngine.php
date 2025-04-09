@@ -25,7 +25,7 @@ class EventEngine
             if (!$listenerResult instanceof EventCanValue) {
                 throw new \RuntimeException('Invalid listener response. Listeners for "can" should return EventCanValue!');
             }
-            if($listenerResult->can && !$can){
+            if(!$listenerResult->can && !$can){
                 $can = $listenerResult->can;
                 $reason = $listenerResult->data;
             }
@@ -34,7 +34,7 @@ class EventEngine
 
         if(!$reason){
             foreach($answers as $answer){
-                if(!$answer->can && $answer->data){
+                if($answer->can && $answer->data){
                     $reason = $answer->data;
                 }
             }
