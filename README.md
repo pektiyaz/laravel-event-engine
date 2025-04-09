@@ -35,6 +35,23 @@ return new EventDoValue(true, $data)
 return new EventDoValue(false, "Reason...")
 
 ```
+## ask(...) listeners:
+Must return:
+
+```php
+//Listener in module Account
+return new EventAskValue(true, ["name" => "John"])
+
+//Listener in module Finance
+return new EventAskValue(true, ["balance" => 500])
+
+//Result
+[
+    "name" => "John",
+    "balance" => 500
+]
+
+```
 ## after(...) listeners:
 Should not return anything. These may implement ShouldQueue.
 
@@ -157,6 +174,20 @@ if (!$response->success) {
 use App\Events\ClientPaid;
 
 EventEngine::after(new ClientPaid($clientId, $amount));
+```
+
+##  ask() — collect data from listeners and returning array of answers
+```php
+use App\Events\GetUserInfo;
+
+$process = EventEngine::ask(new GetUserInfo($clientId));
+if($process->success){
+    return response()->json([
+        'user' => $response->data,
+    ]);
+}
+
+
 ```
 
 # With Listener name

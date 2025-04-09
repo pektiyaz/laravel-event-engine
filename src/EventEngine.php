@@ -3,6 +3,8 @@ namespace Pektiyaz\LaravelEventEngine;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
+use Pektiyaz\LaravelEventEngine\AskValues\EventAskResult;
+use Pektiyaz\LaravelEventEngine\AskValues\EventAskValue;
 use Pektiyaz\LaravelEventEngine\CanValues\EventCanResult;
 use Pektiyaz\LaravelEventEngine\CanValues\EventCanValue;
 use Pektiyaz\LaravelEventEngine\DoValues\EventDoResult;
@@ -79,4 +81,26 @@ class EventEngine
     {
         Event::dispatch($event);
     }
+
+    public static function ask(object $event): EventAskResult
+    {
+        $results = Event::dispatch($event);
+        $data = [];
+        $answers = [];
+        $success = false;
+
+        foreach ($results as $listenerResult) {
+            if (!$listenerResult instanceof EventAskValue) {
+                throw new \RuntimeException('Invalid listener response. Listeners for "ask" should return EventAskValue!');
+            }
+            if($listenerResult->success && !$success){
+                $success = true;
+            }
+            $answers[] = $listenerResult;
+            $data = array_merge($data, $listenerResult->data);
+        }
+
+        return new EventAskResult($success, $data, $answers);
+    }
+
 }
