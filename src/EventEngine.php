@@ -32,6 +32,13 @@ class EventEngine
             $answers[] = $listenerResult;
         }
 
+        if(!$reason){
+            foreach($answers as $answer){
+                if(!$answer->can && $answer->data){
+                    $reason = $answer->data;
+                }
+            }
+        }
 
         return new EventCanResult($can, $reason, $answers);
     }
