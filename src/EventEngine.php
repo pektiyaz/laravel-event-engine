@@ -35,6 +35,7 @@ class EventEngine
         if(!$reason){
             foreach($answers as $answer){
                 if($answer->can && $answer->data){
+                    $can = true;
                     $reason = $answer->data;
                 }
             }
@@ -62,6 +63,14 @@ class EventEngine
             }
         }
 
+        if(!$data){
+            foreach($answers as $answer){
+                if(!$answer->success && $answer->data){
+                    $success = false;
+                    $data = $answer->data;
+                }
+            }
+        }
         return new EventDoResult($success,$data, $answers);
     }
 
@@ -100,6 +109,7 @@ class EventEngine
             if (!$listenerResult instanceof EventAskValue) {
                 throw new \RuntimeException('Invalid listener response. Listeners for "ask" should return EventAskValue!');
             }
+
             if($listenerResult->success && !$success){
                 $success = true;
             }
