@@ -15,7 +15,7 @@ class EventEngine
     public static function can(object $event): EventCanResult
     {
         $reason = null;
-        $can = false;
+        $can = true;
         $answers = [];
 
 
@@ -25,7 +25,7 @@ class EventEngine
             if (!$listenerResult instanceof EventCanValue) {
                 throw new \RuntimeException('Invalid listener response. Listeners for "can" should return EventCanValue!');
             }
-            if(!$listenerResult->can && !$can){
+            if(!$listenerResult->can && !$reason){
                 $can = $listenerResult->can;
                 $reason = $listenerResult->data;
             }
